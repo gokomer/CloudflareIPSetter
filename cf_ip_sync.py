@@ -44,5 +44,5 @@ def update_dns(zone):
         requests.put(url, headers=cf_headers, data=json.dumps(cf_update_body))
 
 
-# for key, value in get_zones().items():
-#     update_dns(value)
+for key, value in get_zones().items():
+     update_dns(value)
