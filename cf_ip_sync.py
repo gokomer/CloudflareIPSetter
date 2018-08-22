@@ -6,6 +6,7 @@ cf_email = os.environ['CF_EMAIL']
 cf_key = os.environ['CF_KEY']
 base_url = "https://api.cloudflare.com/client/v4/zones/"
 checkip_url = "https://api.ipify.org"
+IP = requests.get(checkip_url).text
 
 cf_headers = {
     'X-Auth-Email': cf_email,
@@ -28,10 +29,6 @@ def get_dns(zone):
     return requests.get(url, headers=cf_headers).text
 
 
-def get_ip():
-    return requests.get(checkip_url).text
-
-
 def update_dns(zone):
     dns = json.loads(get_dns(zone))
     for n in dns['result']:
@@ -39,7 +36,7 @@ def update_dns(zone):
         cf_update_body = {
             'type': 'A',
             'name': n['name'],
-            'content': get_ip()
+            'content': IP
         }
         requests.put(url, headers=cf_headers, data=json.dumps(cf_update_body))
 
